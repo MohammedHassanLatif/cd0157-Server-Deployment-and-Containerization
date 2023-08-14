@@ -6,7 +6,7 @@ Description: EKSWSV1
 
 Parameters:
 
-  EksClusterName:
+  EksClusterName: simple-jwt-api
     Type: String
     Description: The name of the EKS cluster created
     Default: simple-jwt-api
@@ -14,7 +14,7 @@ Parameters:
     MaxLength: 100
     ConstraintDescription: You must enter the EKS cluster name
 
-  GitSourceRepo:
+  GitSourceRepo: cd0157-Server-Deployment-and-Containerization
     Type: String
     Description: GitHub source repository - must contain a Dockerfile and buildspec.yml in the base
     Default: cd0157-Server-Deployment-and-Containerization
@@ -22,7 +22,7 @@ Parameters:
     MaxLength: 100
     ConstraintDescription: You must enter a GitHub repository name
 
-  GitBranch:
+  GitBranch: master
     Type: String
     Default: master
     Description: GitHub git repository branch - change triggers a new build
@@ -38,7 +38,7 @@ Parameters:
     MaxLength: 100
     ConstraintDescription: You must enter a GitHub personal access token
 
-  GitHubUser:
+  GitHubUser: MohammedHassanLatif93
     Type: String
     Default: MohammedHassanLatif93
     Description: GitHub username or organization
@@ -54,7 +54,7 @@ Parameters:
     MaxLength: 100
     ConstraintDescription: You must enter a CodeBuild Docker image
 
-  KubectlRoleName:
+  KubectlRoleName: UdacityFlaskDeployCBKubectlRole
     Type: String
     Default: UdacityFlaskDeployCBKubectlRole
     Description: IAM role used by kubectl to interact with EKS cluster
