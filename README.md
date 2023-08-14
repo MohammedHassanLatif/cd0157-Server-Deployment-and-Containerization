@@ -68,7 +68,7 @@ cd cd0157-Server-Deployment-and-Containerization/
 ├── iam-role-policy.json  #ToDo
 ├── main.py
 ├── requirements.txt
-├── simple_jwt_api.yml
+├── simple-jwt-api.yml
 ├── test_main.py  #ToDo
 └── trust.json     #ToDo 
 ```
