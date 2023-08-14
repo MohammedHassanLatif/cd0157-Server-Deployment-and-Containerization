@@ -22,9 +22,9 @@ Parameters:
     MaxLength: 100
     ConstraintDescription: You must enter a GitHub repository name
 
-  GitBranch: master
+  GitBranch: main
     Type: String
-    Default: master
+    Default: main
     Description: GitHub git repository branch - change triggers a new build
     MinLength: 1
     MaxLength: 100
