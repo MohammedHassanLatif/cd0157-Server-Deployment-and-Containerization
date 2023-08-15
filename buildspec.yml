@@ -51,7 +51,11 @@ phases:
       - kubectl apply -f simple-jwt-api.yml 
       - printf '[{"name":"simple-jwt-api","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
 artifacts:
+  type: CodePipeline
   files: build.json
+      - app/*
+  name: MyCustomArtifacts
+  discard-paths: yes
 env:
    parameter-store:
      JWT_SECRET: JWT_SECRET
