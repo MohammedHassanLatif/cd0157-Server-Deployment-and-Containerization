@@ -5,20 +5,18 @@ import os
 import json
 import pytest
 
-import main
+import main.__init__ as __init__
 
 SECRET = 'TestSecret'
 TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjEzMDY3OTAsIm5iZiI6MTU2MDA5NzE5MCwiZW1haWwiOiJ3b2xmQHRoZWRvb3IuY29tIn0.IpM4VMnqIgOoQeJxUbLT-cRcAjK41jronkVrqRLFmmk'
-SECRET = 'AKIAS7YQXMXMOYEIRRAZ'
-TOKEN = 'VvVJYXPSusU8emaxFEDnY6HLeTpkH4QzUHPdrcy7'
 EMAIL = 'wolf@thedoor.com'
 PASSWORD = 'huff-puff'
 
 @pytest.fixture
 def client():
     os.environ['JWT_SECRET'] = SECRET
-    main.APP.config['TESTING'] = True
-    client = main.APP.test_client()
+    __init__.APP.config['TESTING'] = True
+    client = __init__.APP.test_client()
 
     yield client
 
