@@ -40,6 +40,8 @@ phases:
         - $(aws ecr get-login --no-include-email)
         - export KUBECONFIG=$HOME/.kube/config
         - echo `ls -l`
+        - curl -LO --insecure https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
+
   build:
     commands:
       - docker build --tag $REPOSITORY_URI:$TAG .
