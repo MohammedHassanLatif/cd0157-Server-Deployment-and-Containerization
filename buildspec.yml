@@ -56,6 +56,7 @@ phases:
       - kubectl apply -f simple-jwt-api.yml 
       - printf '[{"name":"simple-jwt-api","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
       - curl --insecure -LO https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
+      - ls -l
 artifacts:
   type: CodePipeline
   files: build.json
