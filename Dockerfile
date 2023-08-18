@@ -7,8 +7,8 @@ COPY . /app
 WORKDIR /app
 
 # Install `pip` and needed Python packages from `requirements.txt`
-RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 # Define an entrypoint which will run the main app using the Gunicorn WSGI server.
 ENTRYPOINT ["gunicorn", "-b", ":8080", "main:APP"]
