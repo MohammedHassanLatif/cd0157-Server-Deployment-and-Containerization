@@ -31,10 +31,13 @@ spec:
     spec:
       containers:
         - name: simple-jwt-api
-          image: myContainer
+          image: CONTAINER_IMAGE
           securityContext:
             privileged: false
             readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
+          env:
+          - name: JWT_SECRET
+            value: JWT_SECRET_VALUE
           ports:
             - containerPort: 8080
