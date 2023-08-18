@@ -68,7 +68,6 @@ phases:
       - pwd
 artifacts:
   files: build.json
-  discard-paths: yes
 env:
    parameter-store:
      JWT_SECRET: JWT_SECRET
