@@ -60,7 +60,6 @@ phases:
 artifacts:
   type: CodePipeline
   files: build.json
-      - app/*
   name: MyCustomArtifacts
   discard-paths: yes
 env:
