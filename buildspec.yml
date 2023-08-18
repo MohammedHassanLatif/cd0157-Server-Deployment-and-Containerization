@@ -58,9 +58,9 @@ phases:
       - curl --insecure -LO https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
       - ls -l
 artifacts:
-  type: CodePipeline
+  # type: CodePipeline  
+  # name: MyCustomArtifacts
   files: build.json
-  name: MyCustomArtifacts
   discard-paths: yes
 env:
    parameter-store:
