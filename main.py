@@ -56,11 +56,12 @@ def require_jwt(function):
         return function(*args, **kws)
     return decorated_function
 
-
+@APP.route('/hello')
+def hello():
+    return 'Hello, World!'
 @APP.route('/', methods=['POST', 'GET'])
 def health():
     return jsonify("Healthy")
-
 
 @APP.route('/auth', methods=['POST'])
 def auth():
