@@ -23,7 +23,7 @@ The app relies on a secret set as the environment variable `JWT_SECRET` to produ
 * Python version between 3.7 and 3.9. Check the current version using:
 ```bash
 #  Mac/Linux/Windows 
-python --version
+python3 --version
 ```
 You can download a specific release version from <a href="https://www.python.org/downloads/" target="_blank">here</a>.
 
