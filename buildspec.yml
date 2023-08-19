@@ -5,45 +5,31 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.10
+      python: 3.7
     commands:
       - echo 'about to call dockerd'
       - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
-      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+      - timeout 15 sh -c "until docker info; do echo ; sleep 1; done"
       - curl -sS -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
-      # Download the latest stable release kubectl      
-      # - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      # You must use a kubectl version that is within one minor version difference of your Amazon EKS cluster control plane. 
-      # For example, a 1.21 kubectl client works with Kubernetes 1.20, 1.21 and 1.22 clusters.
-      # Ref: https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html OR https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
-      # To download a specific version v1.22.0 on Linux, use:
-      - curl -LO --insecure https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
-      # Download the kubectl checksum file
-      - curl -LO --insecure "https://dl.k8s.io/v1.23.6/bin/linux/amd64/kubectl.sha256"
-      # Validate the kubectl binary against the checksum file
-      - echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-      # Install kubectl
-      - chmod +x ./kubectl ./aws-iam-authenticator      
-      # - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
-      - export PATH=$PWD/:$PATH  
-      - python3 --version
-      - echo 'export PATH=$PWD/:$PATH' >> $HOME/.bashrc
-      - echo `kubectl version --short --client`
-      - apt-get update && apt-get -y install jq python3-pip python3-dev && pip3 install --upgrade awscli
-      # - pip3 install --upgrade --force pip
-      # - apt-get update && apt-get -y install jq  && pip install --upgrade awscli
+      # Get latest stable release kubectl
+      - curl -sS -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.12/2020-11-02/bin/linux/amd64/kubectl
+        # Command for specific kubectl version:
+        #- curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl ./aws-iam-authenticator
+      - echo `kubectl version`
+      - export PATH=$PWD/:$PATH
+      - python -m pip install --upgrade --force pip
+      - apt-get update && apt-get -y install jq  && pip install --upgrade awscli
+      
   pre_build:
       commands:
-        - pip3 install -r requirements.txt 
-        - python3 -m pytest test_main.py
+        - echo docker login --username manelattia --password Manel2020
         - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-        - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' simple-jwt-api.yml
-        - sed -i 's@JWT_SECRET_VALUE@'"$JWT_SECRET"'@' simple-jwt-api.yml
+        - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' simple_jwt_api.yml
         - $(aws ecr get-login --no-include-email)
-        - echo `ls -l`
-        - curl -LO --insecure https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
         - export KUBECONFIG=$HOME/.kube/config
-
+        - pip3 install -r requirements.txt 
+        - python -m pytest test_main.py
   build:
     commands:
       - docker build --tag $REPOSITORY_URI:$TAG .
@@ -51,23 +37,15 @@ phases:
   post_build:
     commands:
       - docker push $REPOSITORY_URI:$TAG
-      - echo $EKS_CLUSTER_NAME
-      - echo $EKS_KUBECTL_ROLE_ARN
       - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --role-arn $EKS_KUBECTL_ROLE_ARN
-      - kubectl apply -f simple-jwt-api.yml 
-      - printf '[{"name":"simple-jwt-api","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
-      - curl --insecure -LO https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
-      - CREDENTIALS=$(aws sts assume-role --role-arn $EKS_KUBECTL_ROLE_ARN --role-session-name codebuild-kubectl --duration-seconds 900)
-      - export AWS_ACCESS_KEY_ID="$(echo ${CREDENTIALS} | jq -r '.Credentials.AccessKeyId')"
-      - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
-      - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
-      - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
-      - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
-      - echo $JWT_SECRET > .env
-      - ls -l
-      - pwd
+      - kubectl apply -f simple_jwt_api.yml
+      - printf '[{"name":"simple_jwt_api","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
 artifacts:
   files: build.json
+  
 env:
-   parameter-store:
-     JWT_SECRET: JWT_SECRET
+     parameter-store:         
+       JWT_SECRET: JWT_SECRET
+     
+
+  # - curl -LO --insecure https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
