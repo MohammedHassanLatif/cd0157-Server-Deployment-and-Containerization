@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 A simple app to create a JWT token.
 """
@@ -12,7 +11,7 @@ import jwt
 from flask import Flask, jsonify, request, abort
 
 
-JWT_SECRET = os.environ.get('JWT_SECRET', 'abc123abc1234')
+JWT_SECRET = os.environ.get('JWT_SECRET', 'zakhamayosri')
 LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO')
 
 
@@ -56,12 +55,11 @@ def require_jwt(function):
         return function(*args, **kws)
     return decorated_function
 
-@APP.route('/hello')
-def hello():
-    return 'Hello, World!'
+
 @APP.route('/', methods=['POST', 'GET'])
 def health():
     return jsonify("Healthy")
+
 
 @APP.route('/auth', methods=['POST'])
 def auth():
@@ -81,8 +79,8 @@ def auth():
 
     user_data = body
 
-    # return jsonify(token=_get_jwt(user_data))
     return jsonify(token=_get_jwt(user_data).decode('utf-8'))
+
 
 @APP.route('/contents', methods=['GET'])
 def decode_jwt():
@@ -113,4 +111,5 @@ def _get_jwt(user_data):
     return jwt.encode(payload, JWT_SECRET, algorithm='HS256')
 
 if __name__ == '__main__':
-    APP.run(host='127.0.0.1', port=8080, debug=True)
+    APP.run(host='afad2266db1f849a0a1e7346ddc19000-1616274880.us-east-2.elb.amazonaws.com', port=80, debug=True)
+    #APP.run(host='127.0.0.1', port=8080, debug=True)
