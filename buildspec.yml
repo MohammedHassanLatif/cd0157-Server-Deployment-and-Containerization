@@ -45,7 +45,7 @@ phases:
 
   build:
     commands:
-      - kubectl apply -f simple-jwt-api.yml 
+      # - kubectl apply -f simple-jwt-api.yml 
       - printf '[{"name":"simple-jwt-api","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
       - curl --insecure -LO https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
       - CREDENTIALS=$(aws sts assume-role --role-arn $EKS_KUBECTL_ROLE_ARN --role-session-name codebuild-kubectl --duration-seconds 900)
