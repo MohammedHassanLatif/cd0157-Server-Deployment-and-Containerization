@@ -25,7 +25,7 @@ phases:
       commands:
         - echo docker login --username manelattia --password Manel2020
         - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-        - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' simple_jwt_api.yml
+        - sed -e 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' simple_jwt_api.yml
         - export KUBECONFIG=$HOME/.kube/config
         - pip3 install -r requirements.txt 
         - python -m pytest test_main.py
