@@ -1,19 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: simple-jwt-api
+  name: simple-jwt-api2
 spec:
   type: LoadBalancer
   ports:
     - port: 80
       targetPort: 8080
   selector:
-    app: simple-jwt-api
+    app: simple-jwt-api2
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-jwt-api
+  name: simple-jwt-api2
 spec:
   replicas: 3
   strategy:
@@ -23,22 +23,18 @@ spec:
       maxSurge: 2
   selector:
     matchLabels:
-      app: simple-jwt-api
+      app: simple-jwt-api2
   template:
     metadata:
       labels:
-        app: simple-jwt-api
+        app: simple-jwt-api2
     spec:
       containers:
-        - name: simple-jwt-api
+        - name: simple-jwt-api2
           image: CONTAINER_IMAGE
           securityContext:
             privileged: false
             readOnlyRootFilesystem: false
             allowPrivilegeEscalation: false
-          env:
-          - name: JWT_SECRET
-            value: JWT_SECRET_VALUE
           ports:
             - containerPort: 8080
-          
