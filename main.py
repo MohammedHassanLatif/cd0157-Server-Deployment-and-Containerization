@@ -111,5 +111,5 @@ def _get_jwt(user_data):
     return jwt.encode(payload, JWT_SECRET, algorithm='HS256')
 
 if __name__ == '__main__':
-    APP.run(host='afad2266db1f849a0a1e7346ddc19000-1616274880.us-east-2.elb.amazonaws.com', port=80, debug=True)
-    #APP.run(host='127.0.0.1', port=8080, debug=True)
+    # APP.run(host='afad2266db1f849a0a1e7346ddc19000-1616274880.us-east-2.elb.amazonaws.com', port=80, debug=True)
+    APP.run(host='127.0.0.1', port=8080, debug=True)
