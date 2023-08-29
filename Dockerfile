@@ -1,10 +1,9 @@
 # Use the `python:3.10` as a source image from the Amazon ECR Public Gallery
 # We are not using `python:3.10` from Dockerhub because it has put a  pull rate limit. 
-FROM python:stretch
-WORKDIR /myimage
+FROM public.ecr.aws/sam/build-python3.10:latest
 
 # Set up an app directory for your code
-COPY requirements.txt requirements.txt
+COPY . /app
 WORKDIR /app
 
 # Install `pip` and needed Python packages from `requirements.txt`
