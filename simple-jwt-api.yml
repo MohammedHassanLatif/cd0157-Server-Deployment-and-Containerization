@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: simple-jwt-api
-          image: container_image
+          image: CONTAINER_IMAGE
           securityContext:
             privileged: false
             readOnlyRootFilesystem: false
