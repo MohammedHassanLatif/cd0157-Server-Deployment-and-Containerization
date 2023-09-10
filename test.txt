@@ -5,6 +5,10 @@ export TOKEN=`curl --data '{"email":"abc@xyz.com","password":"WindowsPwd"}' --he
 
 echo $TOKEN
 
+
+export TOKEN=`curl -d '{"email":"<EMAIL>","password":"<PASSWORD>"}' -H "Content-Type: application/json" -X POST a6f6e906b2d0841b1a34e56b5b6cd023-170830694.us-east-1.elb.amazonaws.com/auth  | jq -r '.token'`
+
+
 # Decrypt the token and returns its content
 
 curl --request GET 'http://localhost:80/contents' -H "Authorization: Bearer ${TOKEN}" | jq .
