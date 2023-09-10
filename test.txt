@@ -1,0 +1,10 @@
+# Calls the endpoint 'localhost:80/auth' with the email/password as the message body. 
+# The return JWT token assigned to the environment variable 'TOKEN' 
+
+export TOKEN=`curl --data '{"email":"abc@xyz.com","password":"WindowsPwd"}' --header "Content-Type: application/json" -X POST localhost:80/auth  | jq -r '.token'`
+
+echo $TOKEN
+
+# Decrypt the token and returns its content
+
+curl --request GET 'http://localhost:80/contents' -H "Authorization: Bearer ${TOKEN}" | jq .
